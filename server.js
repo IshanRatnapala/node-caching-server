@@ -20,9 +20,6 @@ function getNumberOfRepos (req, res, next) {
     });
 }
 
-app.get('/', function (req, res) {
-    res.send('puka');
-});
 app.get('/repos', getNumberOfRepos);
 
 console.log(PORT);
