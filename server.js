@@ -2,16 +2,21 @@
 
 const express = require('express');
 const request = require('superagent');
+const cheerio = require('cheerio');
 const PORT = process.env.PORT || 3000;
 
 const redis = require('redis');
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
 
 const app = express();
-const client = redis.createClient(REDIS_PORT);
+// const client = redis.createClient(REDIS_PORT);
 
 function respond (org, numberOfRepos) {
     return `org ${org} has ${numberOfRepos} public reps`;
+}
+
+function getScheduleInfo () {
+
 }
 
 function getNumberOfRepos (req, res, next) {
@@ -39,6 +44,18 @@ function cache (req, res, next) {
     })
 }
 
+app.get('/*', function (req, res) {
+    let params = req.params['0'].split('-');
+    let startStation = params[0];
+    let endStation = params[2];
+
+    res.send(startStation + ' to ' + endStation);
+});
+app.post('/*', function (req, res) {
+    var params = req.params['0'];
+    console.log(params.split('-'));
+    res.send();
+});
 app.get('/repos', cache, getNumberOfRepos);
 
 app.listen(PORT, function () {
